@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Vue留言板</title>
+    
+</head>
+<body>
+    <script src="jquery-1.7.2.js"></script>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="vue.js"></script>
+    <script src="bootstrap.js"></script>
+<div id="app">
+    <div class="container">
+        <form role="form">
+            <div class="form-group">
+                <label for="usern">用户名：</label>
+                <input type="text" id="usern" class="form-control" placeholder="请输入用户名" v-model="myname">
+            </div>
+            <div class="form-group">
+                <label for="age">年 龄：</label>
+                <input type="text" id="age" class="form-control"  placeholder="请输入年龄" v-model="myage">
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-success" v-on:click="xz()">新增</button>
+                <button type="button" class="btn btn-warning" v-on:click='cz()'>重置</button>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-hover">
+            <tr>
+                <td class="h2 text-primary text-center" colspan="4">信息表</td>
+            </tr>    
+            <tr class="text-center">
+                <th class="text-center">序号</td>
+                <th class="text-center">姓名</td>
+                <th class="text-center">年龄</td>
+                <th class="text-center">删除</td>
+            </tr>
+            <tr class="text-center" v-for="val in mydate">
+                    <td>{{$index+1}}</td>
+                    <td>{{val.name}}</td>
+                    <td>{{val.age}}</td>
+                    <td><button type="button" class="btn btn-warning btn-sm" data-toggle="modal"  data-target=".bs-example-modal-lg" v-on:click="index_num=$index">删除</button></td>
+            </tr>
+            <tr v-show='this.mydate.length !=0'>
+                <td colspan="4" class="text-right">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg" v-on:click="index_num= -5">删除全部</button>
+                </td>
+            </tr>
+            <tr v-show='this.mydate.length ==0'>
+                <td colspan="4" class="text-center active">
+                    暂无数据......
+                </td>
+            </tr>
+        
+        </table>
+
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4>你确定要删除吗？</h4>
+                        </div>
+                        <div class="modal-body text-right">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" v-on:click="sc(index_num)">删除</button>
+                        </div>
+                  </div>
+                </div>
+        </div>
+    </div>
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            mydate:[],
+            myname:'',
+            myage:'',
+            index_num:-10
+        },
+        methods:{
+            xz:function(){
+                this.mydate.push({
+                    name:this.myname,
+                    age:this.myage,
+                });
+                this.myname='',
+                this.myage=''
+            },
+            cz:function(){
+                this.myname='',
+                this.myage=''
+            },
+            sc:function(num){
+                if(num == -5 ){
+                    this.mydate=[];
+                }else{
+                    this.mydate.splice(num,1);
+                }
+                
+            }
+        }
+    })
+</script>
+</body>
+</html>
